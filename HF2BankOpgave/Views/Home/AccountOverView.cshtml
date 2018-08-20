@@ -1,0 +1,238 @@
+﻿@model  HF2BankOpgave.Models.AccountOverViewModel
+@using System.Linq
+@{
+    ViewBag.Title = "Chargepoints";
+
+    ViewBag.FirstLoadHeader = "Combined logfiles from Azure Application Insights Analytics.";
+    ViewBag.FirstLoadText = "Please choose a from-date, a to-date, a chargepoint you wish to query and also whether or not, you wish to include heartbeats.";
+
+    ViewBag.FaultErrorHeader = "No rows found within search parameters.";
+    ViewBag.FaultErrorText = "It appears that the chosen chargepoint contains no data-entries within your given timespan, extend your timespan or try to include heartbeats.";
+
+    Layout = "~/Views/Shared/_BS4Layout.cshtml";
+}
+@Styles.Render("https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css")
+
+<div class="container">
+    <div class="container-fluid card box-shadow">
+        <div class="card-body">
+            <div>
+                @using (Html.BeginForm("Account", "Account", FormMethod.Get))
+                {
+                    <div class="form-row">
+                        <div class="form-inline col">
+                            <div class="input-group col-sm-6 InputMargin">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="FromDate">From:</label>
+                                </div>
+                                <input type="date" name="FromDate" id="FromDate" value="@Html.Raw(Model.FromDate.Value.ToString("yyyy-MM-dd"))" class="form-control" />
+                            </div>
+                            <div class="input-group col-sm-6 InputMargin">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="ToDate">To:</label>
+                                </div>
+                                <input type="date" name ="ToDate" id="ToDate" value="@Html.Raw(Model.ToDate.Value.ToString("yyyy-MM-dd"))" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-inline col">
+                            <div class="input-group col-sm-8 InputMargin">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="TextBox">Account Number:</label>
+                                </div>
+                                <input type="text" class="form-control" id="TextBox" name="ChosenAccountNumber" list="CP" />
+                                <datalist id="CP">
+                                    @foreach (var item in Model.AccountNumberIds)
+                                    {
+                                        <option value="@item"></option>
+                                    }
+                                </datalist>
+                            </div>
+                            <div class="input-group col-sm-4 InputMargin">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="Rows"># of rows</label>
+                                </div>
+                                @Html.DropDownListFor(m => m.ChosenNumberOfRows,
+                                       new SelectList(Model.NumberOfRows), new { @class = "form-control", @id = "Rows" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-inline col">
+                            <div class="input-group col InputMargin">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="true" id="defaultCheck1" name="ExcludeHeartBeat">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        Exclude Heartbeats
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-inline col">
+                            <div class="input-group col-12 InputMargin">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="myInput">Search</label>
+                                </div>
+                                <input type="text" id="myInput" class="form-control">
+                            </div>
+                            <div class="input-group col-sm InputMargin">
+                                <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container-fluid card">
+    <div class="card-body">
+        @if (Model.IsFirstLoad)
+        {
+            <h6 style="text-align: center">@ViewBag.FirstLoadHeader</h6>
+            <p style="text-align: center">@ViewBag.FirstLoadText</p>
+        }
+        else if (Model.HasErrors)
+        {
+            <h6 style="text-align: center">@ViewBag.FaultErrorHeader</h6>
+            <p style="text-align: center">@ViewBag.FaultErrorText</p>
+        }
+        else if (Model.SearchPerformed)
+        {
+            <div class="container-fluid">
+                <table id="CP" class="table table-striped table-bordered table-hover table-responsive center" style="max-height: 50em">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">ChargepointIdentity</th>
+                            <th onclick="sortTable(1)">DateTime</th>
+                            <th onclick="sortTable(2)">InitiatedByChargePoint</th>
+                            <th onclick="sortTable(3)">MessageType</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.tabledata)
+                        {
+                            <tr>
+                                <td class="TableTDClass">@item.ChargePointIdentity</td>
+                                <td class="TableTDClass">@item.DateTime</td>
+                                <td class="TableTDClass">@item.InitiatedByChargePoint</td>
+                                <td class="TableTDClass">
+                                    @item.MessageType
+                                    <div style="display: none">
+                                        @Html.Raw(Html.Encode(!string.IsNullOrWhiteSpace(item.Response) ? item.Response : item.Request))
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        <div id="orderModal" class="modal hide fade" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Information</h3>
+                        <button type="button" class="btn btn-secondary close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div id="orderDetails" class="modal-body badge-dark">Message: </div>
+                    <div id="orderItems" class="modal-body badge-secondary">
+                        <label></label>
+                        <span id="Response"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //SearchForStringInAllTableRows Script
+    function filterTable(event) {
+        var filter = event.target.value.toUpperCase();
+        var rows = document.querySelector("#CP tbody").rows;
+
+        for (var i = 0; i < rows.length; i++) {
+            var firstCol = rows[i].cells[0].textContent.toUpperCase();
+            var secondCol = rows[i].cells[1].textContent.toUpperCase();
+            var thirdCol = rows[i].cells[2].textContent.toUpperCase();
+            var fourthCol = rows[i].cells[3].textContent.toUpperCase();
+            if (firstCol.indexOf(filter) > -1 || secondCol.indexOf(filter) > -1 || thirdCol.indexOf(filter) > -1 || fourthCol.indexOf(filter) > -1) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+    document.querySelector('#myInput').addEventListener('keyup', filterTable, false);
+
+    //SortOnHeaderClick Script
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("CP");
+        switching = true;
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.getElementsByTagName("tr");
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("td")[n];
+                y = rows[i + 1].getElementsByTagName("td")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+    //ModalPopUpOnClick Script
+    $(function () {
+        $(".table-striped tbody").on('click', 'tr', function (e) {
+
+            console.log(this);
+
+            var mssg = $(this).find('td:last div').text();
+
+            $('#Response').text(mssg);
+            $('#orderModal').modal('show');
+            //// Xhr
+            //$http('url', { id: $(e.currentTarget).data() }, (result) => {
+
+            //    $('#orderModal').modal('show', template = result inject into #orderModal);
+
+            //}).catch((err) => {
+            //    throw err;
+            //});
+        });
+    });
+
+</script>
+
+
