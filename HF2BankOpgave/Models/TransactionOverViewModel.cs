@@ -11,8 +11,8 @@ namespace HF2BankOpgave.Models
         #region Data from form
         public int ChosenNumberOfRows { get; set; }
         public int ChosenAccountId { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
 
 
         #endregion Data from form

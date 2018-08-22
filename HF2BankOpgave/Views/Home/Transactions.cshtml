@@ -18,6 +18,22 @@
                                 </div>
                                 <input type="text" class="form-control" id="AccountId" name="AccountId" />
                             </div>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm-6 InputMargin">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="FromDate">From:</label>
+                                        </div>
+                                        <input type="date" name="FromDate" id="FromDate" value="@Html.Raw(Model.FromDate.Value.ToString("yyyy-MM-dd"))" class="form-control" />
+                                    </div>
+                                    <div class="input-group col-sm-6 InputMargin">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="ToDate">To:</label>
+                                        </div>
+                                        <input type="date" name="ToDate" id="ToDate" value="@Html.Raw(Model.ToDate.Value.ToString("yyyy-MM-dd"))" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
                             <div class="input-group col-sm-4 InputMargin">
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="Rows"># of rows</label>

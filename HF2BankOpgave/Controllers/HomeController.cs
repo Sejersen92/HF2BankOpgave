@@ -29,7 +29,7 @@ namespace HF2BankOpgave.Controllers
         }
 
         [HttpGet]
-        public ActionResult Transactions(int AccountId, int? Index = null, int? ChosenNumberOfRows = null)
+        public ActionResult Transactions(int AccountId, DateTime? FromDate, DateTime? ToDate , int? Index = null, int? ChosenNumberOfRows = null)
         {
             ViewBag.Subtitle = "Transactions";
 
@@ -37,6 +37,8 @@ namespace HF2BankOpgave.Controllers
             {
                 CustomerNumberIds = AH.GetAccountIds(),
                 ChosenNumberOfRows = ChosenNumberOfRows ?? 10,
+                FromDate = FromDate ?? DateTime.UtcNow.AddDays(-1),
+                ToDate = ToDate ?? DateTime.UtcNow,
                 Index = Index ?? 0,
                 ChosenAccountId = AccountId,
 
