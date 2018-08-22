@@ -153,10 +153,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Datalayer\Accounting\AccountHelper.cs" />
     <Compile Include="Datalayer\Accounting\Models\CustomerModel.cs" />
+    <Compile Include="Datalayer\Transactions\TransactionHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountOverViewModel.cs" />
+    <Compile Include="Models\TransactionOverViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

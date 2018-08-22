@@ -11,6 +11,9 @@ namespace HF2BankOpgave.Controllers
 {
     public class HomeController : Controller
     {
+        static readonly string ConnectionString = "Server=LAPTOP-MISE\\SQLEXPRESS;Database=BankOpgave;Trusted_Connection=True;";
+        static AccountHelper AH = new AccountHelper(ConnectionString);
+
         public ActionResult Index()
         {
             return View();
@@ -23,9 +26,13 @@ namespace HF2BankOpgave.Controllers
             return View();
         }
 
-        public ActionResult Transactions()
+        [HttpGet]
+        public ActionResult Transactions(int AccountId, int? Index = null, int? ChosenNumberOfRows = null)
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Subtitle = "Transactions";
+
+
+
 
             return View();
         }
@@ -33,11 +40,9 @@ namespace HF2BankOpgave.Controllers
         [HttpGet]
         public ActionResult Account(string Name, int? AccountId, int? Index = null, int? ChosenNumberOfRows = null)
         {
+            ViewBag.Subtitle = "Account";
+
             var NameSearch = string.IsNullOrWhiteSpace(Name);
-
-            string Conn = "Server=LAPTOP-MISE\\SQLEXPRESS;Database=BankOpgave;Trusted_Connection=True;";
-
-            var AH = new AccountHelper(Conn);
 
             var datamodel = new AccountOverViewModel()
             {

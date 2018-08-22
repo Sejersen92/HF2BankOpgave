@@ -21,6 +21,15 @@ namespace HF2BankOpgave.Datalayer.Accounting.Models
         public string AccountName { get; set; }
         public decimal TotalAccountBalance { get; set; }
         public DateTime CreateDate { get; set; }
+    }
 
+    public class Transaction
+    {
+        public int TransactionID { get; set; }
+        public int AccountID { get; set; }
+        public int CustomerID { get; set; }
+        public DateTime Date { get; set; }
+        public decimal Amount { get; set; }
+        public string Description { get; set; }
     }
 }
