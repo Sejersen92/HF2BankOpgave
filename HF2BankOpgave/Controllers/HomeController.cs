@@ -1,5 +1,6 @@
 ﻿using HF2BankOpgave.Datalayer.Accounting;
 using HF2BankOpgave.Datalayer.Accounting.Models;
+using HF2BankOpgave.Datalayer.Transactions;
 using HF2BankOpgave.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace HF2BankOpgave.Controllers
     {
         static readonly string ConnectionString = "Server=LAPTOP-MISE\\SQLEXPRESS;Database=BankOpgave;Trusted_Connection=True;";
         static AccountHelper AH = new AccountHelper(ConnectionString);
+        static TransactionHelper TH = new TransactionHelper(ConnectionString);
 
         public ActionResult Index()
         {
@@ -31,13 +33,28 @@ namespace HF2BankOpgave.Controllers
         {
             ViewBag.Subtitle = "Transactions";
 
+            var datamodel = new TransactionOverViewModel()
+            {
+                CustomerNumberIds = AH.GetAccountIds(),
+                ChosenNumberOfRows = ChosenNumberOfRows ?? 10,
+                Index = Index ?? 0,
+                ChosenAccountId = AccountId,
 
+                TransactionTableData = Enumerable.Empty<Transaction>()
+            };
 
+            if (AccountId <= 0)
+            {
+                return View(datamodel);
+            }
 
-            return View();
+            var data = TransactionHelper.TransactionLookUpID(AccountId, AccountId.ToString());
+
+            datamodel.TransactionTableData = data.Take(Convert.ToInt32(ChosenNumberOfRows));
+
+            return View(datamodel);
         }
 
-        [HttpGet]
         public ActionResult Account(string Name, int? AccountId, int? Index = null, int? ChosenNumberOfRows = null)
         {
             ViewBag.Subtitle = "Account";
@@ -48,7 +65,7 @@ namespace HF2BankOpgave.Controllers
             {
                 CustomerNumberIds = AH.GetAccountIds(),
                 ChosenNumberOfRows = ChosenNumberOfRows ?? 10,
-                Index = Index.HasValue ? Index.Value : 0,
+                Index = Index ?? 0,
                 ChosenAccountId = AccountId ?? 1,
                 Name = Name,
 

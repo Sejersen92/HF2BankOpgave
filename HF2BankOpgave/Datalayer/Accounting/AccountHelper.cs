@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace HF2BankOpgave.Datalayer.Accounting
 {
@@ -90,6 +91,13 @@ namespace HF2BankOpgave.Datalayer.Accounting
             }
         }
 
+        /// <summary>
+        /// Search for customers by ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="OrderBy"></param>
+        /// <returns></returns>
+        [HttpGet]
         public static IEnumerable<CustomerModel> CustomerLookUpID(int Id, string OrderBy)
         {
             var sql = IDLookUpSQL;
@@ -123,6 +131,12 @@ namespace HF2BankOpgave.Datalayer.Accounting
             return result;
         }
 
+        /// <summary>
+        /// Search for customers by name
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        [HttpGet]
         public static IEnumerable<CustomerModel> CustomerLookUpName(string Name)
         {
             var sql = OrderByLookUpSQL;
@@ -155,6 +169,13 @@ namespace HF2BankOpgave.Datalayer.Accounting
             return result;
         }
 
+        /// <summary>
+        /// get account data on a specific customer by ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="OrderBy"></param>
+        /// <returns></returns>
+        [HttpGet]
         public static IEnumerable<Account> AccountLookUpID(int Id, string OrderBy)
         {
             var sql = AccountLookupSQL;
@@ -186,6 +207,12 @@ namespace HF2BankOpgave.Datalayer.Accounting
                 }
             }
             return result;
+        }
+
+        [HttpPost]
+        public static void Update()
+        {
+
         }
     }
 }
