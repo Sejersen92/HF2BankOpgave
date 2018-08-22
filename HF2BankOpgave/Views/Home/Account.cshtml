@@ -80,21 +80,14 @@
                             <td class="TableTDClass">
                                 @item.CreateDate
                                 <div style="display: none">
-                                    @foreach (var Account in Model.AccountTableData)
-                                    {
-                                        <p>
-                                            @Account.AccountID
-                                        </p>
-                                        <p>
-                                            @Account.AccountName
-                                        </p>
-                                        <p>
-                                            @Account.CreateDate
-                                        </p>
-                                        <p>
-                                            @Account.TotalAccountBalance
-                                        </p>
-                                    }
+                                    <div>
+                                        <ul class="list-group-item-dark list-group-flush">
+                                            @foreach (var Account in Model.AccountTableData)
+                                            {
+                                                <li class="list-group-item-dark">@Account.AccountID - @Account.AccountName - @Account.CreateDate - @Account.TotalAccountBalance</li>
+                                            }
+                                        </ul>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -106,12 +99,12 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title">Information</h3>
+                        <h3 class="modal-title">Accounts for customerID : @Model.ChosenAccountId</h3>
                         <button type="button" class="btn btn-secondary close" data-dismiss="modal">
                             <span>&times;</span>
                         </button>
                     </div>
-                    <div id="orderDetails" class="modal-body badge-dark">Message: </div>
+                    <div id="orderDetails" class="modal-body badge-dark"># of Account: </div>
                     <div id="orderItems" class="modal-body badge-secondary">
                         <label></label>
                         <span id="Response"></span>
@@ -188,18 +181,10 @@
 
             console.log(this);
 
-            var mssg = $(this).find('td:last div').text();
+            var mssg = $(this).find('td:last div').html();
 
-            $('#Response').text(mssg);
+            $('#Response').html(mssg);
             $('#orderModal').modal('show');
-            //// Xhr
-            //$http('url', { id: $(e.currentTarget).data() }, (result) => {
-
-            //    $('#orderModal').modal('show', template = result inject into #orderModal);
-
-            //}).catch((err) => {
-            //    throw err;
-            //});
         });
     });
 

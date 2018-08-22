@@ -23,7 +23,11 @@ namespace HF2BankOpgave.Datalayer.Accounting
         public const string IDLookUpSQL = @"
         select * from dbo.Customer WHERE Customer.ID = @Id";
 
-        public const string AccountLookupSQL = @"select * from dbo.Account where _CustomerID = 1";
+        public const string AccountLookupSQL = @"SELECT [ID]
+      ,[CreateDate]
+      ,[TotalAccountBalance]
+      ,[AccountName]
+  FROM [dbo].[Account] where _CustomerID = @Id";
 
         public const string OrderByLookUpSQL = @"SELECT C.ID
                         ,C.FirstName
@@ -173,9 +177,9 @@ namespace HF2BankOpgave.Datalayer.Accounting
                             result.Add(new Account()
                             {
                                 AccountID = rdr.GetInt32(0),
-                                AccountName = rdr.GetString(1),
-                                CreateDate = rdr.GetDateTime(2),
-                                TotalAccountBalance = rdr.GetDecimal(3)
+                                AccountName = rdr.GetString(3),
+                                CreateDate = rdr.GetDateTime(1),
+                                TotalAccountBalance = rdr.GetDecimal(2)
                             });
                         }
                     }
