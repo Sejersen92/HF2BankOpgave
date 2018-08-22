@@ -42,9 +42,9 @@ namespace HF2BankOpgave.Controllers
             var datamodel = new AccountOverViewModel()
             {
                 CustomerNumberIds = AH.GetAccountIds(),
-                ChosenNumberOfRows = ChosenNumberOfRows.HasValue ? ChosenNumberOfRows.Value : 10,
+                ChosenNumberOfRows = ChosenNumberOfRows ?? 10,
                 Index = Index.HasValue ? Index.Value : 0,
-                ChosenAccountId = AccountId.HasValue ? AccountId.Value : 1,
+                ChosenAccountId = AccountId ?? 1,
                 Name = Name,
 
                 CustomerTabledata = Enumerable.Empty<CustomerModel>()
