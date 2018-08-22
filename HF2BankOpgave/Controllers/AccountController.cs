@@ -17,39 +17,41 @@ namespace HF2BankOpgave.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult Account(AccountOverViewModel request)
-        {
-            var hasErrors = string.IsNullOrWhiteSpace(request.ChosenAccountNumber);
-            var correctSearchPerformed = !hasErrors;
+        //[HttpGet]
+        //public ActionResult Account(string Name, int? AccountId,  int? Index = null, int? ChosenNumberOfRows = null) 
+        //{
+        //    var NameSearch = string.IsNullOrWhiteSpace(Name);
+            
 
-            string Conn = "";
+        //    string Conn = "Server=LAPTOP-MISE\\SQLEXPRESS;Database=BankOpgave;Trusted_Connection=True;";
 
-            var AH = new AccountHelper(Conn);
+        //    var AH = new AccountHelper(Conn);
 
-            request.AccountNumberIds = AH.GetAccountIds();
-
-            var datamodel = new AccountOverViewModel()
-            {
-                AccountNumberIds = request.AccountNumberIds,
-                ChosenNumberOfRows = request.ChosenNumberOfRows,
-                ChosenAccountNumber = request.ChosenAccountNumber,
-                FirstName = request.FirstName ?? request.FirstName,
-                LastName = request.LastName ?? request.LastName,
+        //    var datamodel = new AccountOverViewModel()
+        //    {
+        //        AccountNumberIds = AH.GetAccountIds(),
+        //        ChosenNumberOfRows = ChosenNumberOfRows.HasValue ? ChosenNumberOfRows.Value : 10,
+        //        Index = Index.HasValue ? Index.Value : 0,
+        //        ChosenAccountId = AccountId.HasValue ? AccountId.Value : 1,
+        //        Name = Name,
                 
+        //        tabledata = Enumerable.Empty<CustomerModel>()
+        //    };
 
-                tabledata = Enumerable.Empty<CustomerModel>()
-            };
+        //    if (AccountId != null)
+        //    {
+        //        var data = AccountHelper.LookUpID(AccountId.Value , AccountId.Value.ToString()); //Søger på ID og sortere på ID (DESC)
 
-            if (correctSearchPerformed)
-            {
-                var data = AccountHelper.LookUp(request.ChosenAccountNumber, request.OrderBy);
+        //        datamodel.tabledata = data.Take(Convert.ToInt32(ChosenNumberOfRows));
+        //    }
+        //    else if (!NameSearch)
+        //    {
+        //        var data = AccountHelper.LookUpName(Name, Name); //Søger på name og sortere på name (DESC)
 
-                datamodel.tabledata = data.Take(Convert.ToInt32(request.ChosenNumberOfRows));
+        //        datamodel.tabledata = data.Take(Convert.ToInt32(ChosenNumberOfRows));
+        //    }
 
-            }
-
-            return View(datamodel);
-        }
+        //    return View(datamodel);
+        //}
     }
 }

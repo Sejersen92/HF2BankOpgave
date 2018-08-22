@@ -11,21 +11,22 @@ namespace HF2BankOpgave.Models
     {
 
         #region Data from form
-        [Required]
-        public string ChosenAccountNumber { get; set; }
-        public string ChosenNumberOfRows { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string OrderBy { get; set; }
+        public int ChosenNumberOfRows { get; set; }
+        public string Name { get; set; }
+        public int ChosenAccountId { get; set; }
+
 
 
 
         #endregion Data from form
 
         #region Data send to the view
-        public IEnumerable<string> AccountNumberIds { get; set; }
+        public IEnumerable<string> CustomerNumberIds { get; set; }
+        public int Index { get; set; }
+        public int RowCount { get; set; }
 
-        public IEnumerable<CustomerModel> tabledata { get; set; }
+        public IEnumerable<CustomerModel> CustomerTabledata { get; set; }
+        public IEnumerable<Account> AccountTableData { get; set; }
         public List<string> NumberOfRows { get { return new List<string>() { "10", "25", "50", "100", "250", "500", "1000", "1500" }; } }
 
 
