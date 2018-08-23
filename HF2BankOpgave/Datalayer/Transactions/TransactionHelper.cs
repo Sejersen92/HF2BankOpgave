@@ -19,7 +19,7 @@ namespace HF2BankOpgave.Datalayer.Transactions
 
         public const string AccountSQL = "SELECT ID FROM CUSTOMER"; //Get all ID's
         public const string RowCountSQL = "select count(*) FROM [dbo].[Customer] WHERE ID = @Id"; //Get a total of rows
-        public const string TransactionIDSQL = @"SELECT * FROM dbo.[Transaction] WHERE ID = @Id";
+        public const string TransactionByDate = "SELECT * FROM dbo.[Transaction] Where ID = @Id and Date between @FromDate and @ToDate";
 
         private static IEnumerable<string> AccountCache = new List<string>();
         private static DateTime AccountTimeStamp;
@@ -73,15 +73,17 @@ namespace HF2BankOpgave.Datalayer.Transactions
         }
 
         /// <summary>
-        /// Search transactions on a specific account, for a specific customer. Insert unique account ID.
+        /// Search transactions on a specific account, for a specific customer. Insert unique account ID, a fromDate and a toDate.
         /// </summary>
         /// <param name="Id"></param>
+        /// <param name="FromDate"></param>
+        /// <param name="ToDate"></param>
         /// <param name="OrderBy"></param>
         /// <returns></returns>
         [HttpGet]
-        public static IEnumerable<Transaction> TransactionLookUpID(int Id, string OrderBy)
+        public static IEnumerable<Transaction> TransactionLookUpByDate(int Id, DateTime FromDate, DateTime ToDate, string OrderBy)
         {
-            var sql = TransactionIDSQL;
+            var sql = TransactionByDate;
 
             sql += string.Format(@" ORDER BY {0} DESC", OrderBy);
 
@@ -93,6 +95,8 @@ namespace HF2BankOpgave.Datalayer.Transactions
                 using (var cmd = new SqlCommand(sql, con))
                 {
                     cmd.Parameters.AddWithValue("Id", Id);
+                    cmd.Parameters.AddWithValue("FromDate", FromDate);
+                    cmd.Parameters.AddWithValue("ToDate", ToDate);
 
                     using (var rdr = cmd.ExecuteReader())
                     {
@@ -113,6 +117,5 @@ namespace HF2BankOpgave.Datalayer.Transactions
             }
             return result;
         }
-
     }
 }

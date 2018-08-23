@@ -30,15 +30,7 @@ namespace HF2BankOpgave.Datalayer.Accounting
       ,[AccountName]
   FROM [dbo].[Account] where _CustomerID = @Id";
 
-        public const string OrderByLookUpSQL = @"SELECT C.ID
-                        ,C.FirstName
-                        ,C.LastName
-                        ,C.CreateDate
-	                    ,A.AccountName
-	                    ,A.ID
-	                    ,A.TotalAccountBalance
-                         FROM [dbo].[Customer] as C, 
-                        [dbo].Account as A WHERE FirstName = @OrderBy";
+        public const string OrderByLookUpSQL = @"SELECT * FROM [dbo].[Customer] Where FirstName = @OrderBy";
 
         private static IEnumerable<string> AccountCache = new List<string>();
         private static DateTime AccountTimeStamp;
@@ -209,10 +201,34 @@ namespace HF2BankOpgave.Datalayer.Accounting
             return result;
         }
 
-        [HttpPost]
-        public static void Update()
+        public static void CreateCustomer()
         {
 
         }
+
+        [HttpPost]
+        public static void UpdateCustomer(int CustomerID, CustomerModel customerModel)
+        {
+
+        }
+
+        [HttpPost]
+        public static void DeleteCustomer(int CustomerID)
+        {
+
+        }
+
+        public static void UpdateAccount(int AccountID, Account accountModel)
+        {
+
+        }
+
+        [HttpPost]
+        public static void DeleteAccount(int AccountID)
+        {
+
+        }
+
+        
     }
 }

@@ -14,7 +14,7 @@
                         <div class="form-inline col">
                             <div class="input-group col-sm-8 InputMargin">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" for="TextBox">Account Number:</label>
+                                    <label class="input-group-text" for="TextBox">Customer Number:</label>
                                 </div>
                                 <input type="text" class="form-control" id="AccountId" name="AccountId" list="dl" />
                                 <datalist id="dl">
@@ -26,7 +26,7 @@
                             </div>
                             <div class="input-group col-sm-8">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" for="Name">Name:</label>
+                                    <label class="input-group-text" for="Name">First Name:</label>
                                 </div>
                                 <input type="text" class="form-control" id="Name" name="Name" />
                             </div>
@@ -41,12 +41,6 @@
                     </div>
                     <div class="form-row">
                         <div class="form-inline col">
-                            <div class="input-group col-12 InputMargin">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="myInput">Search</label>
-                                </div>
-                                <input type="text" id="myInput" class="form-control">
-                            </div>
                             <div class="input-group col-sm InputMargin">
                                 <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
                             </div>
@@ -81,10 +75,19 @@
                                 @item.CreateDate
                                 <div style="display: none">
                                     <div>
-                                        <ul class="list-group-item-dark list-group-flush">
-                                            @foreach (var Account in Model.AccountTableData)
+                                        <ul class="list-group ">
+                                            @foreach (var account in item.Accounts)
                                             {
-                                                <li class="list-group-item-dark">@Account.AccountID - @Account.AccountName - @Account.CreateDate - @Account.TotalAccountBalance</li>
+                                                <li class="list-group-item" style="color: black">
+                                                    <h2>Account Name: @account.AccountName</h2>
+                                                    <h4 style="float:right"> Account ID: @account.AccountID</h4>
+                                                </li>
+                                                <li class="list-group-item" style="color: black">
+                                                    <p>CreateDate: @account.CreateDate</p>
+                                                </li>
+                                                <li class="list-group-item" style="color: black">
+                                                    <p>Current Account Balance: @account.TotalAccountBalance</p>
+                                                </li>
                                             }
                                         </ul>
                                     </div>
@@ -99,12 +102,12 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title">Accounts for customerID : @Model.ChosenAccountId</h3>
+                        <h3 class="modal-title">User Accounts for @Model.Name</h3>
                         <button type="button" class="btn btn-secondary close" data-dismiss="modal">
                             <span>&times;</span>
                         </button>
                     </div>
-                    <div id="orderDetails" class="modal-body badge-dark"># of Account: </div>
+                    <div id="orderDetails" class="modal-body badge-dark"># of Account: @(Model.ChosenAccountId.Count() + 1)</div>
                     <div id="orderItems" class="modal-body badge-secondary">
                         <label></label>
                         <span id="Response"></span>

@@ -50,7 +50,7 @@ namespace HF2BankOpgave.Controllers
                 return View(datamodel);
             }
 
-            var data = TransactionHelper.TransactionLookUpID(AccountId, AccountId.ToString());
+            var data = TransactionHelper.TransactionLookUpByDate(AccountId, FromDate.Value, ToDate.Value, AccountId.ToString());
 
             datamodel.TransactionTableData = data.Take(Convert.ToInt32(ChosenNumberOfRows));
 
@@ -68,7 +68,7 @@ namespace HF2BankOpgave.Controllers
                 CustomerNumberIds = AH.GetAccountIds(),
                 ChosenNumberOfRows = ChosenNumberOfRows ?? 10,
                 Index = Index ?? 0,
-                ChosenAccountId = AccountId ?? 1,
+                ChosenAccountId = new List<int>(),
                 Name = Name,
 
                 CustomerTabledata = Enumerable.Empty<CustomerModel>()
@@ -76,20 +76,30 @@ namespace HF2BankOpgave.Controllers
 
             if (AccountId != null)
             {
+                datamodel.ChosenAccountId.Add(AccountId.Value);
+
                 var data = AccountHelper.CustomerLookUpID(AccountId.Value, AccountId.Value.ToString()); //Søger på ID og sortere på ID (DESC)
-                var AccountData = AccountHelper.AccountLookUpID(AccountId.Value, AccountId.Value.ToString());
+
+                foreach (var d in data)
+                {
+                    d.Accounts = AccountHelper.AccountLookUpID(AccountId.Value, AccountId.Value.ToString());
+                }
 
                 datamodel.CustomerTabledata = data.Take(Convert.ToInt32(ChosenNumberOfRows));
-                datamodel.AccountTableData = AccountData;
-                
             }
+
             else if (!NameSearch)
             {
                 var data = AccountHelper.CustomerLookUpName(Name); //Søger på name og sortere på name (DESC)
-                var AccountData = AccountHelper.AccountLookUpID(AccountId.Value, AccountId.Value.ToString());
 
+                
+                foreach (var c in data)
+                {
+                    datamodel.ChosenAccountId.Add(c.CustomerID);
+
+                    c.Accounts = AccountHelper.AccountLookUpID(c.CustomerID, "ID");
+                }
                 datamodel.CustomerTabledata = data.Take(Convert.ToInt32(ChosenNumberOfRows));
-                datamodel.AccountTableData = AccountData;
             }
 
             return View(datamodel);

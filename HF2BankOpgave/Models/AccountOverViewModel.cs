@@ -13,7 +13,7 @@ namespace HF2BankOpgave.Models
         #region Data from form
         public int ChosenNumberOfRows { get; set; }
         public string Name { get; set; }
-        public int ChosenAccountId { get; set; }
+        public List<int> ChosenAccountId { get; set; }
 
         #endregion Data from form
 
@@ -23,7 +23,6 @@ namespace HF2BankOpgave.Models
         public int RowCount { get; set; }
 
         public IEnumerable<CustomerModel> CustomerTabledata { get; set; }
-        public IEnumerable<Account> AccountTableData { get; set; }
         public List<string> NumberOfRows { get { return new List<string>() { "10", "25", "50", "100", "250", "500", "1000", "1500" }; } }
 
 
