@@ -32,6 +32,8 @@ namespace HF2BankOpgave.Datalayer.Accounting
 
         public const string OrderByLookUpSQL = @"SELECT * FROM [dbo].[Customer] Where FirstName = @OrderBy";
 
+        public const string DeleteCustomerSQL = "DELETE FROM [dbo].[Customer] WHERE ID = @Id";
+
         private static IEnumerable<string> AccountCache = new List<string>();
         private static DateTime AccountTimeStamp;
         private object thislock = new object();
@@ -212,10 +214,24 @@ namespace HF2BankOpgave.Datalayer.Accounting
 
         }
 
+        /// <summary>
+        /// Delete a single user, by CustomerID.
+        /// </summary>
+        /// <param name="CustomerID"></param>
         [HttpPost]
         public static void DeleteCustomer(int CustomerID)
         {
+            var sql = OrderByLookUpSQL;
 
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                con.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, con))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public static void UpdateAccount(int AccountID, Account accountModel)
