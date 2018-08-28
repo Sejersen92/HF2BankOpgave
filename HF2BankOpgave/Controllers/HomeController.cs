@@ -29,7 +29,7 @@ namespace HF2BankOpgave.Controllers
         }
 
         [HttpGet]
-        public ActionResult Transactions(int AccountId, DateTime? FromDate, DateTime? ToDate , int? Index = null, int? ChosenNumberOfRows = null)
+        public ActionResult Transactions(int? AccountId, DateTime? FromDate, DateTime? ToDate , int? Index = null, int? ChosenNumberOfRows = null)
         {
             ViewBag.Subtitle = "Transactions";
 
@@ -40,21 +40,24 @@ namespace HF2BankOpgave.Controllers
                 FromDate = FromDate ?? DateTime.UtcNow.AddDays(-1),
                 ToDate = ToDate ?? DateTime.UtcNow,
                 Index = Index ?? 0,
-                ChosenAccountId = AccountId,
+                ChosenAccountId = new List<int>(),
 
                 TransactionTableData = Enumerable.Empty<Transaction>()
             };
 
-            if (AccountId <= 0)
+            if (AccountId > 0)
+            {
+                datamodel.ChosenAccountId.Add(AccountId.Value);
+                var data = TransactionHelper.TransactionLookUpByDate(AccountId.Value, FromDate.Value, ToDate.Value, AccountId.ToString());
+
+                datamodel.TransactionTableData = data.Take(Convert.ToInt32(ChosenNumberOfRows));
+
+                return View(datamodel);
+            }
+            else
             {
                 return View(datamodel);
             }
-
-            var data = TransactionHelper.TransactionLookUpByDate(AccountId, FromDate.Value, ToDate.Value, AccountId.ToString());
-
-            datamodel.TransactionTableData = data.Take(Convert.ToInt32(ChosenNumberOfRows));
-
-            return View(datamodel);
         }
 
         public ActionResult Account(string Name, int? AccountId, int? Index = null, int? ChosenNumberOfRows = null)
