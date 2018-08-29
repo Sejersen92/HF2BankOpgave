@@ -265,7 +265,7 @@ namespace HF2BankOpgave.Datalayer.Accounting
         /// </summary>
         /// <param name="CustomerID"></param>
         [HttpPost]
-        public static void DeleteCustomer(int CustomerID)
+        public static bool DeleteCustomer(int CustomerID)
         {
             var sql = DeleteCustomerSQL;
 
@@ -275,7 +275,19 @@ namespace HF2BankOpgave.Datalayer.Accounting
 
                 using (SqlCommand command = new SqlCommand(sql, con))
                 {
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        var result = command.ExecuteNonQuery();
+                        if (result > 0)
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Error message: {e}");
+                    }
+                    return false;
                 }
             }
         }
@@ -287,7 +299,7 @@ namespace HF2BankOpgave.Datalayer.Accounting
         /// <param name="CreateDate"></param>
         /// <param name="AccountName"></param>
         [HttpPost]
-        public static void CreateAccount(int CustomerId, DateTime CreateDate, string AccountName)
+        public static bool CreateAccount(int CustomerId, DateTime CreateDate, string AccountName)
         {
             var sql = CreateCustomerSQL;
 
@@ -304,7 +316,11 @@ namespace HF2BankOpgave.Datalayer.Accounting
 
                     // Check Error
                     if (result < 0)
+                    {
                         Console.WriteLine("Error inserting data into Database!");
+                        return false;
+                    }
+                    return true;
                 }
             }
         }
@@ -314,7 +330,7 @@ namespace HF2BankOpgave.Datalayer.Accounting
         /// </summary>
         /// <param name="AccountID"></param>
         [HttpPost]
-        public static void DeleteAccount(int AccountID)
+        public static bool DeleteAccount(int AccountID)
         {
             var sql = DeleteAccountSQL;
 
@@ -324,7 +340,19 @@ namespace HF2BankOpgave.Datalayer.Accounting
 
                 using (SqlCommand command = new SqlCommand(sql, con))
                 {
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        var result = command.ExecuteNonQuery();
+                        if (result > 0)
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Error message: {e}");
+                    }
+                    return false;
                 }
             }
         }

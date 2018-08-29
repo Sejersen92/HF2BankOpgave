@@ -21,9 +21,9 @@ namespace HF2BankOpgave.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult CustomerControl(CustomerControlModel model)
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Subtitle = "Customer ControlPanel";
 
             return View();
         }
