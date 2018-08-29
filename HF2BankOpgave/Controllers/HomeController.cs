@@ -21,9 +21,19 @@ namespace HF2BankOpgave.Controllers
             return View();
         }
 
+        
         public ActionResult CustomerControl(CustomerControlModel model)
         {
             ViewBag.Subtitle = "Customer ControlPanel";
+
+            //var datamodel = new CustomerControlModel()
+            //{
+            //    Firstname = model.Firstname,
+            //    Lastname = model.Lastname,
+            //    CustomerID = model.CustomerID ?? 1,
+            //    AccountID = model.AccountID ?? 1,
+            //    AccountName = model.AccountName
+            //};
 
             return View();
         }

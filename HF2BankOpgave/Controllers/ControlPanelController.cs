@@ -1,5 +1,6 @@
 ﻿using HF2BankOpgave.Datalayer.Accounting;
 using HF2BankOpgave.Datalayer.Accounting.Models;
+using HF2BankOpgave.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,11 @@ namespace HF2BankOpgave.Controllers
 {
     public class ControlPanelController : ApiController
     {
+        
         [HttpPost]
-        public bool CreateCustomer(string FirstName, string LastName, DateTime CreateDate)
+        public bool CreateCustomer([FromBody]CustomerControlModel model)
         {
-            if (AccountHelper.CreateCustomer(FirstName, LastName, DateTime.UtcNow))
+            if (AccountHelper.CreateCustomer(model.Firstname, model.Lastname))
             {
                 return true;
             }

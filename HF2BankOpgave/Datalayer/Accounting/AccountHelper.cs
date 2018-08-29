@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -43,11 +44,11 @@ namespace HF2BankOpgave.Datalayer.Accounting
 
         public const string CreateCustomerSQL = @"
         INSERT INTO [dbo].[Customer]
-           ([FirstName]
-           ,[LastName]
-           ,[CreateDate])
+           (FirstName
+           ,LastName
+           ,CreateDate)
         VALUES
-           ('@FirstName', '@LastName', '@CreateDate')";
+           (@FirstName, @LastName, @CreateDate)";
 
         public const string CreateAccountSQL = @"
         INSERT INTO [dbo].[Account]
@@ -56,7 +57,7 @@ namespace HF2BankOpgave.Datalayer.Accounting
            ,[TotalAccountBalance]
            ,[AccountName])
         VALUES
-           (@CustomerId, '@CreateDate', 0, '@AccountName')";
+           (@CustomerId, @CreateDate, 0, @AccountName)";
 
         private static IEnumerable<string> AccountCache = new List<string>();
         private static DateTime AccountTimeStamp;
@@ -234,9 +235,16 @@ namespace HF2BankOpgave.Datalayer.Accounting
         /// <param name="LastName"></param>
         /// <param name="CreateDate"></param>
         [HttpPost]
-        public static bool CreateCustomer(string FirstName, string LastName, DateTime CreateDate)
+        public static bool CreateCustomer(string FirstName, string LastName)
         {
+
+            //2018 - 08 - 08 00:00:00.000
+            //yyyy-MM-dd HH:mm:ss:fff
+
             var sql = CreateCustomerSQL;
+
+            var format = "yyyy-MM-dd hh:mm:ss";
+            var stringDate = DateTime.UtcNow.ToString(format);
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
@@ -244,7 +252,7 @@ namespace HF2BankOpgave.Datalayer.Accounting
                 {
                     command.Parameters.AddWithValue("@FirstName", FirstName);
                     command.Parameters.AddWithValue("@LastName", LastName);
-                    command.Parameters.AddWithValue("@CreateDate", DateTime.UtcNow);
+                    command.Parameters.AddWithValue("@CreateDate", stringDate);
 
                     connection.Open();
                     int result = command.ExecuteNonQuery();

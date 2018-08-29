@@ -8,8 +8,7 @@
     <div class="container-fluid card box-shadow">
         <div class="card-body">
             <div>
-                @using (Html.BeginForm("CreateCustomer", "ControlPanel", FormMethod.Post))
-                {
+                <form id="Create" method="post" action="/api/ControlPanel/CreateCustomer" enctype="application/x-www-form-urlencoded">
                     <h2>Create a new Customer</h2>
                     <div class="form-row">
                         <div class="form-inline col">
@@ -34,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                }
+                </form>
             </div>
         </div>
     </div>
@@ -44,8 +43,7 @@
     <div class="container-fluid card box-shadow">
         <div class="card-body">
             <div>
-                @using (Html.BeginForm("DeleteCustomer", "ControlPanel", FormMethod.Post))
-                {
+                <form id="Create" method="post" action="/api/ControlPanel/DeleteCustomer" enctype="application/x-www-form-urlencoded">
                     <h2>Delete an existing Customer</h2>
                     <p>Before you do this, know that deleting a customer will delete all the accounts, including their transactions.</p>
                     <div class="form-row">
@@ -65,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                }
+                </form>
             </div>
         </div>
     </div>
