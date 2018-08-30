@@ -20,6 +20,7 @@ namespace HF2BankOpgave.Datalayer.Transactions
         public const string AccountSQL = "SELECT ID FROM CUSTOMER"; //Get all ID's
         public const string RowCountSQL = "select count(*) FROM [dbo].[Customer] WHERE ID = @Id"; //Get a total of rows
         public const string TransactionByDate = "SELECT * FROM dbo.[Transaction] Where ID = @Id and Date between @FromDate and @ToDate";
+        public const string TransactionSum = @"SELECT SUM (Amount) from dbo.[Transaction] where [Transaction]._AccountID = @Id";
 
         private static IEnumerable<string> AccountCache = new List<string>();
         private static DateTime AccountTimeStamp;
@@ -117,5 +118,10 @@ namespace HF2BankOpgave.Datalayer.Transactions
             }
             return result;
         }
+
+        //public static int GetTransactionSum(int Id)
+        //{
+
+        //}
     }
 }

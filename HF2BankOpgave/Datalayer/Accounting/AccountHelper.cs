@@ -384,7 +384,5 @@ namespace HF2BankOpgave.Datalayer.Accounting
                 }
             }
         }
-
-
     }
 }
