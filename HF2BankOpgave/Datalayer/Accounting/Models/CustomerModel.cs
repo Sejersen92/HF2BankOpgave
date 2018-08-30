@@ -22,7 +22,9 @@ namespace HF2BankOpgave.Datalayer.Accounting.Models
         public string AccountName { get; set; }
         public decimal TotalAccountBalance { get; set; }
         public DateTime CreateDate { get; set; }
-        public IEnumerable<Transaction> Transactions {get; set;} 
+        public IEnumerable<Transaction> Transactions {get; set;}
+        public int Interest { get; set; }
+        public string AccountTypeName { get; set; }
     }
 
     public class Transaction

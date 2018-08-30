@@ -12,7 +12,6 @@ namespace HF2BankOpgave.Controllers
 {
     public class ControlPanelController : ApiController
     {
-        
         [HttpPost]
         public bool CreateCustomer([FromBody]CustomerControlModel model)
         {
@@ -24,9 +23,9 @@ namespace HF2BankOpgave.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult DeleteCustomer(int CustomerID)
+        public IHttpActionResult DeleteCustomer([FromBody]CustomerControlModel model)
         {
-            var status = AccountHelper.DeleteCustomer(CustomerID);
+            var status = AccountHelper.DeleteCustomer(model.CustomerID.Value);
             if (status)
             {
                 return Ok();
@@ -38,9 +37,9 @@ namespace HF2BankOpgave.Controllers
         }
 
         [HttpPost]
-        public bool CreateAccount(int CustomerID, string AccountName)
+        public bool CreateAccount([FromBody]CustomerControlModel model)
         {
-            if (AccountHelper.CreateAccount(CustomerID, DateTime.UtcNow, AccountName))
+            if (AccountHelper.CreateAccount(model.CustomerID.Value, DateTime.UtcNow, model.AccountName, model.AccountType))
             {
                 return true;
             }
@@ -48,7 +47,7 @@ namespace HF2BankOpgave.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult DeleteAccount(int AccountID)
+        public IHttpActionResult DeleteAccount([FromBody]int AccountID)
         {
             var status = AccountHelper.DeleteAccount(AccountID);
             if (status)
@@ -60,6 +59,5 @@ namespace HF2BankOpgave.Controllers
                 return BadRequest();
             }
         }
-
     }
 }

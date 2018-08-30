@@ -81,12 +81,16 @@
                                                 <li class="list-group-item" style="color: black">
                                                     <h2>Account Name: @account.AccountName</h2>
                                                     <h4 style="float:right"> Account ID: @account.AccountID</h4>
+                                                    <h4> Account Type: @account.AccountTypeName</h4>
                                                 </li>
                                                 <li class="list-group-item" style="color: black">
                                                     <p>CreateDate: @account.CreateDate</p>
                                                 </li>
                                                 <li class="list-group-item" style="color: black">
                                                     <p>Current Account Balance: @account.TotalAccountBalance</p>
+                                                </li>
+                                                <li class="list-group-item" style="color: black">
+                                                    <p>Interest: @account.Interest%</p>
                                                 </li>
                                             }
                                         </ul>
@@ -107,7 +111,6 @@
                             <span>&times;</span>
                         </button>
                     </div>
-                    <div id="orderDetails" class="modal-body badge-dark"># of Account: @(Model.ChosenAccountId.Count() + 1)</div>
                     <div id="orderItems" class="modal-body badge-secondary">
                         <label></label>
                         <span id="Response"></span>

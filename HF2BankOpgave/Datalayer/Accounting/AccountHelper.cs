@@ -19,17 +19,27 @@ namespace HF2BankOpgave.Datalayer.Accounting
             ConnectionString = connectionString;
         }
 
+        #region SQL STRINGS
+
         public const string AccountSQL = "SELECT ID FROM CUSTOMER"; //Get all ID's
         public const string RowCountSQL = "select count(*) FROM [dbo].[Customer] WHERE ID = @Id"; //Get a total of rows
 
         public const string IDLookUpSQL = @"
         select * from dbo.Customer WHERE Customer.ID = @Id";
 
-        public const string AccountLookupSQL = @"SELECT [ID]
-      ,[CreateDate]
-      ,[TotalAccountBalance]
-      ,[AccountName]
-        FROM [dbo].[Account] where _CustomerID = @Id";
+        public const string AccountLookupSQL = @"
+        Select Account.ID
+		,Account._CustomerID
+		,Account.CreateDate
+		,Account.TotalAccountBalance
+		,Account.AccountName
+		,AccountType.AccountType
+		,AccountType.Interest
+		,AccountType.AccountName
+		from dbo.Account
+		inner join AccountType
+		on Account.AccountType=AccountType.AccountType
+		where Account._CustomerID = @Id";
 
         public const string OrderByLookUpSQL = @"SELECT * FROM [dbo].[Customer] Where FirstName = @OrderBy";
 
@@ -55,9 +65,12 @@ namespace HF2BankOpgave.Datalayer.Accounting
            ([_CustomerID]
            ,[CreateDate]
            ,[TotalAccountBalance]
-           ,[AccountName])
+           ,[AccountName]
+		   ,[AccountType])
         VALUES
-           (@CustomerId, @CreateDate, 0, @AccountName)";
+           (@CustomerId, @CreateDate, 0, @AccountName, @AccountType)";
+
+        #endregion SQL STRINGS
 
         private static IEnumerable<string> AccountCache = new List<string>();
         private static DateTime AccountTimeStamp;
@@ -217,9 +230,11 @@ namespace HF2BankOpgave.Datalayer.Accounting
                             result.Add(new Account()
                             {
                                 AccountID = rdr.GetInt32(0),
-                                AccountName = rdr.GetString(3),
-                                CreateDate = rdr.GetDateTime(1),
-                                TotalAccountBalance = rdr.GetDecimal(2)
+                                AccountName = rdr.GetString(4),
+                                CreateDate = rdr.GetDateTime(2),
+                                TotalAccountBalance = rdr.GetDecimal(3),
+                                Interest = rdr.GetInt32(6),
+                                AccountTypeName = rdr.GetString(7)
                             });
                         }
                     }
@@ -283,6 +298,8 @@ namespace HF2BankOpgave.Datalayer.Accounting
 
                 using (SqlCommand command = new SqlCommand(sql, con))
                 {
+                    command.Parameters.AddWithValue("@Id", CustomerID);
+
                     try
                     {
                         var result = command.ExecuteNonQuery();
@@ -307,7 +324,7 @@ namespace HF2BankOpgave.Datalayer.Accounting
         /// <param name="CreateDate"></param>
         /// <param name="AccountName"></param>
         [HttpPost]
-        public static bool CreateAccount(int CustomerId, DateTime CreateDate, string AccountName)
+        public static bool CreateAccount(int CustomerId, DateTime CreateDate, string AccountName, int AccountType)
         {
             var sql = CreateCustomerSQL;
 
@@ -318,6 +335,7 @@ namespace HF2BankOpgave.Datalayer.Accounting
                     command.Parameters.AddWithValue("@CustomerId", CustomerId);
                     command.Parameters.AddWithValue("@CreateDate", DateTime.UtcNow);
                     command.Parameters.AddWithValue("@AccountName", AccountName);
+                    command.Parameters.AddWithValue("@AccountType", AccountType);
 
                     connection.Open();
                     int result = command.ExecuteNonQuery();
@@ -348,6 +366,8 @@ namespace HF2BankOpgave.Datalayer.Accounting
 
                 using (SqlCommand command = new SqlCommand(sql, con))
                 {
+                    command.Parameters.AddWithValue("@AccountID", AccountID);
+
                     try
                     {
                         var result = command.ExecuteNonQuery();

@@ -26,15 +26,6 @@ namespace HF2BankOpgave.Controllers
         {
             ViewBag.Subtitle = "Customer ControlPanel";
 
-            //var datamodel = new CustomerControlModel()
-            //{
-            //    Firstname = model.Firstname,
-            //    Lastname = model.Lastname,
-            //    CustomerID = model.CustomerID ?? 1,
-            //    AccountID = model.AccountID ?? 1,
-            //    AccountName = model.AccountName
-            //};
-
             return View();
         }
 
@@ -58,7 +49,7 @@ namespace HF2BankOpgave.Controllers
             if (AccountId > 0)
             {
                 datamodel.ChosenAccountId.Add(AccountId.Value);
-                var data = TransactionHelper.TransactionLookUpByDate(AccountId.Value, FromDate.Value, ToDate.Value, AccountId.ToString());
+                var data = TransactionHelper.TransactionLookUpByDate(AccountId.Value, FromDate.Value, ToDate.Value, "ID");
 
                 datamodel.TransactionTableData = data.Take(Convert.ToInt32(ChosenNumberOfRows));
 
@@ -91,11 +82,11 @@ namespace HF2BankOpgave.Controllers
             {
                 datamodel.ChosenAccountId.Add(AccountId.Value);
 
-                var data = AccountHelper.CustomerLookUpID(AccountId.Value, AccountId.Value.ToString()); //Søger på ID og sortere på ID (DESC)
+                var data = AccountHelper.CustomerLookUpID(AccountId.Value, "ID"); //Søger på ID og sortere på ID (DESC)
 
                 foreach (var d in data)
                 {
-                    d.Accounts = AccountHelper.AccountLookUpID(AccountId.Value, AccountId.Value.ToString());
+                    d.Accounts = AccountHelper.AccountLookUpID(AccountId.Value, "ID");
                 }
 
                 datamodel.CustomerTabledata = data.Take(Convert.ToInt32(ChosenNumberOfRows));

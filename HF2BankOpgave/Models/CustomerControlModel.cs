@@ -15,6 +15,8 @@ namespace HF2BankOpgave.Models
         public int? CustomerID { get; set; }
         public string AccountName { get; set; }
         public int? AccountID { get; set; }
+        public int AccountType { get; set; }
+
 
         #endregion Data from form
 

@@ -4,136 +4,194 @@
 @Styles.Render("https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css")
 @Scripts.Render("~/bundles/jquery")
 
-<div class="container">
-    <div class="container-fluid card box-shadow">
-        <div class="card-body">
-            <div>
-                <form id="Create" method="post" action="/api/ControlPanel/CreateCustomer" enctype="application/x-www-form-urlencoded">
-                    <h2>Create a new Customer</h2>
-                    <div class="form-row">
-                        <div class="form-inline col">
-                            <div class="input-group col-sm-8 InputMargin">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="TextBox">First Name:</label>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="container">
+            <div class="container-fluid card box-shadow">
+                <div class="card-body">
+                    <div>
+                        <form id="CreateCustomer" name="CreateCustomer">
+                            <h2>Create a new Customer</h2>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm-8 InputMargin">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="TextBox">First Name:</label>
+                                        </div>
+                                        <input type="text" class="form-control" id="FirstName" name="FirstName" />
+                                    </div>
+                                    <div class="input-group col-sm-8">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="Name">Last Name:</label>
+                                        </div>
+                                        <input type="text" class="form-control" id="LastName" name="LastName" />
+                                    </div>
                                 </div>
-                                <input type="text" class="form-control" id="FirstName" name="FirstName" />
                             </div>
-                            <div class="input-group col-sm-8">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="Name">Last Name:</label>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm InputMargin">
+                                        <button type="submit" class="btn btn-primary" name="myBtn">Execute</button>
+                                    </div>
                                 </div>
-                                <input type="text" class="form-control" id="LastName" name="LastName" />
                             </div>
-                        </div>
+                        </form>
                     </div>
-                    <div class="form-row">
-                        <div class="form-inline col">
-                            <div class="input-group col-sm InputMargin">
-                                <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-sm-6">
+        <div class="container">
+            <div class="container-fluid card box-shadow">
+                <div class="card-body">
+                    <div>
+                        <form id="DeleteCustomer" name="DeleteCustomer">
+                            <h2>Delete an existing Customer</h2>
+                            <p>Before you do this, know that deleting a customer will delete all the accounts, including their transactions.</p>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm-8 InputMargin">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="TextBox">Customer ID:</label>
+                                        </div>
+                                        <input type="text" class="form-control" id="CustomerID" name="CustomerID" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm InputMargin">
+                                        <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <br />
-<div class="container">
-    <div class="container-fluid card box-shadow">
-        <div class="card-body">
-            <div>
-                <form id="Create" method="post" action="/api/ControlPanel/DeleteCustomer" enctype="application/x-www-form-urlencoded">
-                    <h2>Delete an existing Customer</h2>
-                    <p>Before you do this, know that deleting a customer will delete all the accounts, including their transactions.</p>
-                    <div class="form-row">
-                        <div class="form-inline col">
-                            <div class="input-group col-sm-8 InputMargin">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="TextBox">Customer ID:</label>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="container">
+            <div class="container-fluid card box-shadow">
+                <div class="card-body">
+                    <div>
+                        <form id="CreateAccount" name="CreateAccount">
+                            <h2>Create a new account on an existing customer</h2>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm-8">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="TextBox">Customer ID:</label>
+                                        </div>
+                                        <input type="text" class="form-control" id="CustomerID" name="CustomerID" />
+                                    </div>
+                                    <div class="input-group col-sm-8 InputMargin">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="TextBox">Account ID:</label>
+                                        </div>
+                                        <input type="text" class="form-control" id="AccountID" name="AccountID" />
+                                    </div>
                                 </div>
-                                <input type="text" class="form-control" id="CustomerID" name="CustomerID" />
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-inline col">
-                            <div class="input-group col-sm InputMargin">
-                                <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm InputMargin">
+                                        <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-sm-6">
+        <div class="container">
+            <div class="container-fluid card box-shadow">
+                <div class="card-body">
+                    <div>
+                        <form id="DeleteAccount" name="DeleteAccount">
+                            <h2>Delete an existing Account</h2>
+                            <p>Before you do this, know that deleting an account will delete all the transactions.</p>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm-8 InputMargin">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="TextBox">Account ID:</label>
+                                        </div>
+                                        <input type="text" class="form-control" id="AccountID" name="AccountID" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-inline col">
+                                    <div class="input-group col-sm InputMargin">
+                                        <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<br />
-<div class="container">
-    <div class="container-fluid card box-shadow">
-        <div class="card-body">
-            <div>
-                @using (Html.BeginForm("CreateAccount", "ControlPanel", FormMethod.Post))
-                {
-                    <h2>Create a new account on an existing customer</h2>
-                    <div class="form-row">
-                        <div class="form-inline col">
-                            <div class="input-group col-sm-8 InputMargin">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="TextBox">Customer ID:</label>
-                                </div>
-                                <input type="text" class="form-control" id="CustomerID" name="CustomerID" />
-                            </div>
-                        </div>
-                        <div class="form-inline col">
-                            <div class="input-group col-sm-8 InputMargin">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="TextBox">Account ID:</label>
-                                </div>
-                                <input type="text" class="form-control" id="AccountID" name="AccountID" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-inline col">
-                            <div class="input-group col-sm InputMargin">
-                                <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-<br />
-<div class="container">
-    <div class="container-fluid card box-shadow">
-        <div class="card-body">
-            <div>
-                @using (Html.BeginForm("DeleteAccount", "ControlPanel", FormMethod.Post))
-                {
-                    <h2>Delete an existing Account</h2>
-                    <p>Before you do this, know that deleting an account will delete all the transactions.</p>
-                    <div class="form-row">
-                        <div class="form-inline col">
-                            <div class="input-group col-sm-8 InputMargin">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="TextBox">Account ID:</label>
-                                </div>
-                                <input type="text" class="form-control" id="AccountID" name="AccountID" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-inline col">
-                            <div class="input-group col-sm InputMargin">
-                                <button type="submit" class="btn btn-primary" name="myBtn" value="hejmor">Execute</button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
+<script>
+    //AJAX POST CALL - CREATE Customer
+    $('#CreateCustomer').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/api/ControlPanel/CreateCustomer',
+            type: 'post',
+            data: $('#CreateCustomer').serialize(),
+            success: function () {
+                alert("Successfully created a new customer!");
+            }
+        });
+    });
+    //AJAX POST CALL - DELETE Customer
+    $('#DeleteCustomer').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/api/ControlPanel/DeleteCustomer',
+            type: 'post',
+            data: $('#DeleteCustomer').serialize(),
+            success: function () {
+                alert("Successfully deleted the account!");
+            }
+        });
+    });
+    //AJAX POST CALL - CREATE Account
+    $('#CreateAccount').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/api/ControlPanel/CreateAccount',
+            type: 'post',
+            data: $('#CreateAccount').serialize(),
+            success: function () {
+                alert("Successfully created a new account!");
+            }
+        });
+    });
+    //AJAX POST CALL - DELETE Account
+    $('#DeleteAccount').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/api/ControlPanel/DeleteAccount',
+            type: 'post',
+            data: $('#DeleteAccount').serialize(),
+            success: function () {
+                alert("Successfully deleted the account!");
+            }
+        });
+    });
+</script>
